@@ -21,6 +21,8 @@ describe("BookingInfo Component", () => {
     expect(screen.getByLabelText(/number of lanes/i)).toBeInTheDocument();
   });
 
+ 
+
   it('should call updateBookingDetails on date change', () => {
     const dateInput = screen.getByLabelText(/date/i);
     fireEvent.change(dateInput, { target: { value: '2024-06-12' } });
@@ -54,8 +56,9 @@ describe("BookingInfo Component", () => {
     expect(mockUpdateBookingDetails).toHaveBeenCalled();
     const event = mockUpdateBookingDetails.mock.calls[0][0];
     expect(event.target.name).toBe('lanes');
-    
+
   })
+
 
 });
 

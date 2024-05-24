@@ -39,7 +39,7 @@ describe("Confirmation Component", () => {
   it("should display inga bookning gjord! när inga bookningar är aktiva", () => {
     render(
         <Confirmation
-        confirmationDetails={{...confirmationDetails, active: false }}
+        confirmationDetails={{...confirmationDetails, active: false }}   // confirmationDetails is an object that contains details about a booking. If active is false, no booking is active.
         setConfirmation={mockSetConfirmation}
         />
     )
