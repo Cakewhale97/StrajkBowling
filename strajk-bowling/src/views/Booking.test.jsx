@@ -1,21 +1,36 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach, beforeAll, afterEach } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  beforeAll,
+  afterEach,
+} from "vitest";
 import Booking from "./Booking";
 import { server } from "../mocks/server";
+import { http, HttpResponse } from "msw";
 
-beforeAll(() => server.listen ());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+describe("Booking Component", () => {
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
-test('submits the booking data', async () => {
+  test("should handle successful booking", async () => {
     render(<Booking />);
-     
-    fireEvent.click(screen.getByText(/strIIIIIike!/i));
 
-    await waitFor(() => expect(screen.getByTestId('confirmation')).toBeInTheDocument());
+    fireEvent.change(screen.getByLabelText(/date/i), {
+      target: { value: "2024-06-12" },
+    });
+    fireEvent.change(screen.getByLabelText(/number of awesome bowlers/i), {
+      target: { value: "4" },
+    });
 
-    expect(screen.getByText(/booking number: ABC123/i)).toBeInTheDocument();
+    fireEvent.click(screen.queryAllByText(/strIIIIIike!/i)[0]);
 
+    await waitFor(() => screen.queryAllByAltText(/see you soon!/i));
 
-
+    expect(screen.getByText(/see you soon!/i)).toBeInTheDocument();
+  });
 });
