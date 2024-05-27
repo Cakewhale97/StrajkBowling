@@ -18,8 +18,8 @@ jobs:
           node-version: '16' # Specify your required Node.js version
 
       - name: Install dependencies
-        working-directory: '../strajk-bowling' 
+        working-directory: '/strajk-bowling' 
 
       - name: Run tests
-        working-directory: '../strajk-bowling' 
+        working-directory: '/strajk-bowling' 
         run: npm run test
