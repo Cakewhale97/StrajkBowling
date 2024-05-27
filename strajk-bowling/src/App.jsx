@@ -1,5 +1,6 @@
 import './App.scss';
 
+
 import Booking from './views/Booking';
 
 function App() {

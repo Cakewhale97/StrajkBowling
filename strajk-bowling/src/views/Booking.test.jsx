@@ -1,36 +1,119 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  beforeAll,
-  afterEach,
-} from "vitest";
+import { describe, it, expect, beforeAll, afterEach, afterAll } from "vitest";
 import Booking from "./Booking";
-import { server } from "../mocks/server";
+import Confirmation from "../components/Confirmation/Confirmation";
+import { setupServer } from "msw/node";
 import { http, HttpResponse } from "msw";
 
-describe("Booking Component", () => {
-  beforeAll(() => server.listen());
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
+// Define handlers for mocking API responses
+const handlers = [
+  http.post(
+    "https://h5jbtjv6if.execute-api.eu-north-1.amazonaws.com",
+    async ({ request }) => {
+      // Read the intercepted request body as JSON
+      const newBooking = await request.json();
+      console.log('Mock POST request body:', newBooking);
 
-  test("should handle successful booking", async () => {
+
+      // Return the newly created booking with a status of 201 Created
+      return HttpResponse.json(
+        {
+          active: true,
+          when: "2024-05-04T10:01",
+          lanes: "1",
+          people: "2",
+          shoes: ["42", "43"],
+          id: "STR7243KPOM",
+          price: 340,
+        },
+        { status: 201 }
+      );
+    }
+  ),
+];
+
+// Set up the server
+const server = setupServer(...handlers);
+
+// Start server before all tests
+beforeAll(() => server.listen());
+
+// Reset handlers after each test
+afterEach(() => server.resetHandlers());
+
+// Stop server after all tests
+afterAll(() => server.close());
+
+describe("Booking Component", () => {
+  it("sends a POST request, receives a mock response, and passes data to Confirmation component", async () => {
     render(<Booking />);
 
-    fireEvent.change(screen.getByLabelText(/date/i), {
-      target: { value: "2024-06-12" },
+    // Fill in the form with test data
+    fireEvent.change(screen.getByLabelText(/Date/i), {
+      target: { value: "2024-05-04" },
     });
-    fireEvent.change(screen.getByLabelText(/number of awesome bowlers/i), {
-      target: { value: "4" },
+    fireEvent.change(screen.getByLabelText(/Time/i), {
+      target: { value: "10:01" },
+    });
+    fireEvent.change(screen.getByLabelText(/Number of lanes/i), {
+      target: { value: "1" },
+    });
+    fireEvent.change(screen.getByLabelText(/Number of awesome bowlers/i), {
+      target: { value: "2" },
     });
 
-    fireEvent.click(screen.queryAllByText(/strIIIIIike!/i)[0]);
+    // Add shoe sizes
+    fireEvent.click(screen.getByText("+"));
+    fireEvent.change(screen.getByLabelText(/Shoe size \/ person 1/i), {
+      target: { value: "42" },
+    });
+    fireEvent.click(screen.getByText("+"));
+    fireEvent.change(screen.getByLabelText(/Shoe size \/ person 2/i), {
+      target: { value: "43" },
+    });
 
-    await waitFor(() => screen.queryAllByAltText(/see you soon!/i));
+    // Submit the form
+    fireEvent.click(screen.getByText(/strIIIIIike!/i));
 
-    expect(screen.getByText(/see you soon!/i)).toBeInTheDocument();
+    // Wait for the confirmation message to appear
+    await waitFor(() => {
+      // Check for the confirmation message
+      expect(screen.getByText(/see you soon!/i)).toBeInTheDocument();
+    });
+
+    // Verify form input values in the Booking component
+    expect(screen.getByDisplayValue("2024-05-04 10:01")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("1")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("2")).toBeInTheDocument();
+  
+  });
+
+  it("renders Confirmation component correctly", () => {
+    // Define the props to pass to Confirmation component
+    const confirmationProps = {
+      active: true,
+      when: "2024-05-04T10:01",
+      lanes: "1",
+      people: "2",
+      shoes: ["42", "43"],
+      id: "STR7243KPOM",
+      price: 340,
+    };
+
+    // Render Confirmation component directly to check props
+    render(
+      <Confirmation
+        confirmationDetails={confirmationProps}
+        setConfirmation={() => {}}
+      />
+    );
+    screen.debug();
+
+    // Assert the confirmation details using the appropriate matchers
+    expect(screen.getByDisplayValue("2024-05-04 10:01")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("1")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("2")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("STR7243KPOM")).toBeInTheDocument();
+    expect(screen.getByText("340 sek")).toBeInTheDocument();
   });
 });

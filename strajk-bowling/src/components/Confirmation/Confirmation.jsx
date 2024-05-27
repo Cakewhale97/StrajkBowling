@@ -5,6 +5,7 @@ import Navigation from '../Navigation/Navigation';
 import Input from '../Input/Input';
 
 function Confirmation({ confirmationDetails, setConfirmation }) {
+  console.log(confirmationDetails, "confirmationDetails");
   return (
     <section className='confirmation'>
       <Navigation setConfirmation={setConfirmation} />
