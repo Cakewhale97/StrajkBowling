@@ -1,0 +1,25 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16' # Specify your required Node.js version
+
+      - name: Install dependencies
+        working-directory: '../strajk-bowling' 
+
+      - name: Run tests
+        working-directory: '../strajk-bowling' 
+        run: npm run test
