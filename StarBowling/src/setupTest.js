@@ -1,5 +1,6 @@
 // src/setupTest.js
-import { Response, Request, Headers, fetch } from 'node-fetch';
+import { Response, Request, Headers } from 'node-fetch';
+import fetch from "node-fetch";
 import '@testing-library/jest-dom';
 
 global.Response = Response;
