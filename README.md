@@ -26,7 +26,7 @@ Som användare vill jag kunna välja skostorlek för varje spelare så varje spe
 
 **Acceptanskriterier:**
 
- **Skostorleksval**:
+1. **Skostorleksval**:
    - För varje spelare ska användaren kunna välja en skostorlek från ett inputfält.
    - Det ska finnas en standard skostorlek förvalda för varje spelare, till exempel "Välj skostorlek".
 
