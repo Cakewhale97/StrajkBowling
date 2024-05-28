@@ -1,4 +1,4 @@
-# StarBowling Project
+# StarBowling Test
 
 ## User Stories och Acceptanskriterier
 
