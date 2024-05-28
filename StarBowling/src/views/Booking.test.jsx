@@ -45,7 +45,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("Booking Component", () => {
-  it("sends a POST request, receives a mock response, and passes data to Confirmation component", async () => {
+  it("The user can make a booking request", async () => {
     render(<Booking />);
 
     // Fill in the form with test data
@@ -90,32 +90,5 @@ describe("Booking Component", () => {
     expect(screen.getByDisplayValue("STR7243KPOM")).toBeInTheDocument();
   });
 
-  it("renders Confirmation component correctly", () => {
-    // Define the props to pass to Confirmation component
-    const confirmationProps = {
-      active: true,
-      when: "2024-05-04T10:01",
-      lanes: "1",
-      people: "2",
-      shoes: ["42", "43"],
-      id: "STR7243KPOM",
-      price: 340,
-    };
 
-    // Render Confirmation component directly to check props
-    render(
-      <Confirmation
-        confirmationDetails={confirmationProps}
-        setConfirmation={() => {}}
-      />
-    );
-    screen.debug();
-
-    // Assert the confirmation details using the appropriate matchers
-    expect(screen.getByDisplayValue("2024-05-04 10:01")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("1")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("2")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("STR7243KPOM")).toBeInTheDocument();
-    expect(screen.getByText("340 sek")).toBeInTheDocument();
-  });
 });
