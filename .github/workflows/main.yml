@@ -19,6 +19,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: '/StarBowling' 
+        run: npm install
 
       - name: Run tests
         working-directory: '/StarBowling' 
