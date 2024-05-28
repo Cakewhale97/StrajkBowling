@@ -1,4 +1,5 @@
 import './Confirmation.scss';
+import '@testing-library/jest-dom';
 
 import Top from '../Top/Top';
 import Navigation from '../Navigation/Navigation';

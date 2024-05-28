@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeAll, afterEach, afterAll } from "vitest";
 import Booking from "./Booking";
-import Confirmation from "../components/Confirmation/Confirmation";
 import { setupServer } from "msw/node";
 import { http, HttpResponse } from "msw";
+
 
 // Define handlers for mocking API responses
 const handlers = [
