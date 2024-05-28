@@ -48,5 +48,34 @@ describe("Confirmation Component", () => {
     expect(element).toBeInTheDocument();
   });
 
+  it("renders confirmation component correctly", () => {
+    // We define the props to pass to the confirmation component 
+    const confirmationProps = {
+      active: true,
+      when: "2024-05-04T10:01",
+      lanes: "1",
+      people: "2",
+      shoes: ["42", "43"],
+      id: "STR7243KPOM",
+      price: 340,
+    };
+
+    // Render the confirmation component directly to check the props 
+    render (
+      <Confirmation
+        confirmationDetails={confirmationProps}
+        setConfirmation={() => {}}
+      />
+    );
+    screen.debug();
+
+    // Assert the confirmation details 
+    expect(screen.getByDisplayValue("2024-05-04 10:01")).toBeInTheDocument();
+    expect(screen.getAllByDisplayValue("1")[0]).toBeInTheDocument();
+    expect(screen.getByDisplayValue("STR7243KPOM")).toBeInTheDocument();
+    expect(screen.getByText("340 sek")).toBeInTheDocument();
+  });
+
+
 
 });

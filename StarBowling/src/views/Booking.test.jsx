@@ -86,6 +86,8 @@ describe("Booking Component", () => {
     expect(screen.getByDisplayValue("1")).toBeInTheDocument();
     expect(screen.getByDisplayValue("2")).toBeInTheDocument();
   
+    screen.debug()
+    expect(screen.getByDisplayValue("STR7243KPOM")).toBeInTheDocument();
   });
 
   it("renders Confirmation component correctly", () => {
